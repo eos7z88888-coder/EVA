@@ -5,7 +5,21 @@ let w=canvas.width=window.innerWidth;
 let h=canvas.height=window.innerHeight;
 const particles=[];
 for(let i=0;i<150;i++) particles.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5});
-function animate(){ctx.fillStyle='rgba(15,23,42,0.1)';ctx.fillRect(0,0,w,h);ctx.fillStyle='#ffec99';particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;});requestAnimationFrame(animate);}
+function animate(){
+  ctx.fillStyle='rgba(15,23,42,0.1)';
+  ctx.fillRect(0,0,w,h);
+  ctx.fillStyle='#ffec99';
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+    p.x+=p.dx;
+    p.y+=p.dy;
+    if(p.x<0)p.x=w;if(p.x>w)p.x=0;
+    if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+  });
+  requestAnimationFrame(animate);
+}
 animate();
 
 // 元素选择
@@ -45,6 +59,7 @@ closeBtn.addEventListener('click',()=>{
   overlay.style.display='none';
   angryOverlay.style.display='flex';
   angryMessage.textContent='请点击下面选项或刷新页面重新选择音乐！';
+  document.body.style.overflow='hidden'; // 禁止滚动
 });
 
 // 官方推荐按钮
