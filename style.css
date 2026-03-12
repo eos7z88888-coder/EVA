@@ -6,7 +6,8 @@ body, html {
   font-family:Arial,sans-serif;
   background:#0f172a;
   color:#e5e7eb;
-  overflow:hidden;
+  overflow-x: hidden;   /* 水平隐藏 */
+  overflow-y: auto;     /* 垂直允许滚动 */
 }
 #backgroundCanvas {position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;}
 #musicOverlay, #angryOverlay {
