@@ -29,7 +29,7 @@ musicBtns.forEach(btn=>{
     overlay.style.display='none';
     mainContent.style.display='block';
     smileEmoji.style.display='block';
-    document.body.style.overflowY='auto';
+    document.body.style.overflowY='auto'; // 恢复滚动
   });
 });
 
@@ -40,7 +40,7 @@ skipBtn.addEventListener('mousemove',e=>{
 });
 skipBtn.addEventListener('click',e=>{ e.preventDefault(); alert('必须选择音乐！'); });
 
-// 关闭叉叉 → 愤怒
+// 关闭叉叉 → 弹出愤怒
 closeBtn.addEventListener('click',()=>{
   overlay.style.display='none';
   angryOverlay.style.display='flex';
