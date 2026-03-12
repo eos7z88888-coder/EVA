@@ -1,1 +1,31 @@
-
+body, html {
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:Arial,sans-serif;
+  background:#0f172a;
+  color:#e5e7eb;
+  overflow:hidden;
+}
+#backgroundCanvas {position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;}
+#musicOverlay, #angryOverlay {
+  position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+}
+#musicOverlay {background:rgba(0,0,0,0.9);}
+#angryOverlay {background:rgba(0,0,0,0.95);display:none;}
+button {padding:10px 20px;margin:10px;font-size:18px;cursor:pointer;}
+#skipButton {position:absolute;top:20px;right:20px;}
+#closeButton {position:absolute;top:20px;left:20px;font-size:24px;color:red;cursor:pointer;}
+#angryEmoji {font-size:20vw;margin-bottom:20px;}
+#angryButtons button {margin:15px;}
+#smileEmoji {font-size:30px;margin-top:20px;display:none;}
+#messageArea {color:#f87171;margin-top:10px;text-align:center;z-index:15;position:relative;}
+#mainContent {display:none;max-width:1000px;margin:auto;padding:40px;position:relative;z-index:5;}
+h1{font-size:40px;margin-bottom:10px;color:#facc15}
+h2{margin-top:40px;color:#38bdf8}
+.card{background:#111827;padding:20px;border-radius:12px;margin-top:20px;position:relative}
+ul{line-height:1.8}
+.footer{margin-top:60px;font-size:14px;color:#9ca3af;text-align:center}
+.small-face{position:absolute;bottom:10px;right:10px;font-size:24px}
