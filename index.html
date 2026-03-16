@@ -4,93 +4,423 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>互动首页</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
+overflow-x:hidden;
+}
+
+/* 背景动画 */
+
+#backgroundCanvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+}
+
+/* 音乐选择界面 */
+
+#musicOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:1000;
+}
+
+/* 乐园之声按钮 */
+
+.musicBtn{
+padding:14px 30px;
+margin:12px;
+font-size:18px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+
+background:linear-gradient(135deg,#38bdf8,#6366f1);
+color:white;
+font-weight:bold;
+
+transition:all .3s;
+
+box-shadow:0 6px 20px rgba(0,0,0,.4);
+}
+
+.musicBtn:hover{
+transform:translateY(-4px) scale(1.05);
+background:linear-gradient(135deg,#22d3ee,#8b5cf6);
+box-shadow:0 10px 30px rgba(56,189,248,.6);
+}
+
+/* 跳过按钮 */
+
+#skipButton{
+margin-top:20px;
+padding:10px 18px;
+cursor:pointer;
+}
+
+/* 关闭按钮 */
+
+#closeButton{
+position:absolute;
+top:20px;
+left:20px;
+cursor:pointer;
+font-size:22px;
+}
+
+/* 愤怒弹窗 */
+
+#angryOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+display:none;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:2000;
+}
+
+#angryEmoji{
+font-size:120px;
+margin-bottom:20px;
+}
+
+/* 主内容 */
+
+#mainContent{
+display:none;
+max-width:900px;
+margin:auto;
+padding:40px;
+position:relative;
+z-index:10;
+line-height:1.8;
+}
+
+.card{
+background:#111827;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+}
+
+.small-face{
+position:absolute;
+right:10px;
+bottom:10px;
+}
+
+/* 今日特别专辑按钮 */
+
+#specialAlbumBtn{
+position:fixed;
+top:15px;
+right:20px;
+padding:10px 16px;
+border:none;
+border-radius:8px;
+background:linear-gradient(135deg,#facc15,#f97316);
+color:white;
+font-weight:bold;
+cursor:pointer;
+z-index:500;
+}
+
+/* 专辑弹窗 */
+
+#specialAlbumModal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.8);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:3000;
+}
+
+.albumBox{
+background:#111827;
+padding:40px;
+border-radius:12px;
+max-width:420px;
+text-align:center;
+position:relative;
+}
+
+#closeAlbum{
+position:absolute;
+top:10px;
+right:15px;
+cursor:pointer;
+}
+
+#playAlbum{
+margin-top:20px;
+padding:12px 20px;
+border:none;
+border-radius:8px;
+background:#38bdf8;
+cursor:pointer;
+color:white;
+}
+
+</style>
 </head>
+
 <body>
 
 <canvas id="backgroundCanvas"></canvas>
 
+<button id="specialAlbumBtn">🎵 今日特别专辑</button>
+
 <!-- 音乐选择界面 -->
+
 <div id="musicOverlay">
-  <div id="closeButton">✖</div>
-  <h2>点击下方按钮播放音乐并进入 🎵</h2>
-  <button class="musicBtn" data-src="music/乐园之声1.mp3">乐园之声1</button>
-  <button class="musicBtn" data-src="music/乐园之声2.mp3">乐园之声2</button>
-  <button class="musicBtn" data-src="music/乐园之声3.mp3">乐园之声3</button>
-  <button id="skipButton">跳过</button>
-  <div id="messageArea"></div>
-  <div id="smileEmoji">😊</div>
+
+<div id="closeButton">✖</div>
+
+<h2>点击下方按钮播放音乐并进入 🎵</h2>
+
+<button class="musicBtn" data-src="music/乐园之声1.mp3">🎧 乐园之声1</button>
+<button class="musicBtn" data-src="music/乐园之声2.mp3">🎧 乐园之声2</button>
+<button class="musicBtn" data-src="music/乐园之声3.mp3">🎧 乐园之声3</button>
+
+<button id="skipButton">跳过</button>
+
 </div>
 
-<!-- 愤怒弹窗界面 -->
+<!-- 愤怒界面 -->
+
 <div id="angryOverlay">
-  <div id="angryEmoji">😡</div>
-  <div id="angryButtons">
-    <button id="officialBtn">官方推荐</button>
-    <button id="retryBtn">再次选择</button>
-  </div>
-  <div id="angryMessage"></div>
+
+<div id="angryEmoji">😡</div>
+
+<button onclick="location.reload()">重新选择</button>
+
 </div>
 
 <audio id="bgMusic" loop></audio>
 
-<!-- 主内容 -->
+<!-- 主页面 -->
+
 <div id="mainContent">
+
 <h1>量化投资</h1>
+
 <p>欢迎来到我们的乐园！这里没有板着脸的办公室，只有六个人的团队，从玩到认真做，慢慢把量化变成有趣又有收益的事情 😏</p >
 
-<h2>一、传统金融市场 (Traditional Finance)</h2>
+<h2>一、传统金融市场</h2>
+
 <div class="card">
-<p>传统金融市场就像成熟稳定的游乐设施，你以为安全，其实我们偷偷在统计套利 😐</p >
+
 <ul>
-<li>贵金属：黄金、白银，稳稳的过山车</li>
-<li>外汇市场：全球货币对，旋转木马般波动</li>
-<li>债券市场：政府债券与公司债券，慢速碰碰车</li>
-<li>股票市场：上市公司股权，高低起伏的过山车</li>
+<li>贵金属：黄金、白银</li>
+<li>外汇市场</li>
+<li>债券市场</li>
+<li>股票市场</li>
+
 </ul>
-<div class="small-face">🤡</div>
+
 </div>
 
-<h2>二、非传统金融市场 (Alternative Finance)</h2>
-<div class="card">
-<p>这里是乐园的新项目，刺激、创新，又充满惊喜。别怕，小丑脸随时蹦出来 😏</p >
-<ul>
-<li>数字资产：加密货币和区块链，炫酷激光迷宫</li>
-<li>去中心化金融(DeFi)：自己动手探险项目</li>
-<li>私募股权与风险投资：VIP隐藏关卡</li>
-<li>另类投资机会：收藏品、艺术品，各种彩蛋</li>
-</ul>
-<div class="small-face">🤡</div>
-</div>
+<h2>二、非传统金融市场</h2>
 
-<h2>策略理念</h2>
 <div class="card">
+
 <ul>
-<li>数据驱动量化模型——我们的乐园地图 😐</li>
-<li>多资产策略配置——每个设施都能玩到</li>
-<li>跨市场套利——寻宝游戏般刺激</li>
-<li>风险控制与长期收益——安全又有趣</li>
+
+<li>数字资产</li>
+
+<li>DeFi</li>
+
+<li>私募投资</li>
+
+<li>另类资产</li>
+
 </ul>
-<div class="small-face">🤡</div>
+
 </div>
 
 <h2>团队介绍</h2>
+
 <div class="card">
-<p>我们只有六个人，每个人都有自己喜欢的“游乐设施”，从玩到把量化建起来。冷脸幽默也能赚钱 😏</p >
-<div class="small-face">🤡</div>
+
+<p>我们只有六个人，从玩到把量化建起来。</p >
+
 </div>
 
 <h2>联系方式</h2>
+
 <div class="card">
+
 <p>Email: eos7z88888@gmail.com</p >
-<div class="small-face">🤡</div>
+
 </div>
 
-<div class="footer">
-<p>© Quant Team</p >
-</div>
 </div>
 
-<script src="script.js"></script>
+<!-- 今日特别专辑 -->
+
+<div id="specialAlbumModal">
+
+<div class="albumBox">
+
+<span id="closeAlbum">✖</span>
+
+<h2>今日特别专辑</h2>
+
+<p>六个人的团队，从混着玩到认真做量化。</p >
+
+<button id="playAlbum">聆听团队心声</button>
+
+<audio id="albumMusic" src="music/姐不是女王.mp3"></audio>
+
+</div>
+
+</div>
+
+<script>
+
+/* 音乐选择 */
+
+const overlay=document.getElementById("musicOverlay")
+const main=document.getElementById("mainContent")
+const musicBtns=document.querySelectorAll(".musicBtn")
+const audio=document.getElementById("bgMusic")
+
+musicBtns.forEach(btn=>{
+
+btn.onclick=function(){
+
+audio.src=btn.dataset.src
+
+audio.play()
+
+overlay.style.display="none"
+
+main.style.display="block"
+
+}
+
+})
+
+/* 跳过按钮 */
+
+document.getElementById("skipButton").onclick=function(){
+
+overlay.style.display="none"
+
+document.getElementById("angryOverlay").style.display="flex"
+
+}
+
+/* 背景动画 */
+
+const canvas=document.getElementById("backgroundCanvas")
+const ctx=canvas.getContext("2d")
+
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
+
+let stars=[]
+
+for(let i=0;i<120;i++){
+
+stars.push({
+
+x:Math.random()*canvas.width,
+
+y:Math.random()*canvas.height,
+
+r:Math.random()*2
+
+})
+
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+ctx.fillStyle="white"
+
+stars.forEach(s=>{
+
+ctx.beginPath()
+
+ctx.arc(s.x,s.y,s.r,0,Math.PI*2)
+
+ctx.fill()
+
+})
+
+requestAnimationFrame(draw)
+
+}
+
+draw()
+
+/* 今日特别专辑 */
+
+const albumModal=document.getElementById("specialAlbumModal")
+const albumBtn=document.getElementById("specialAlbumBtn")
+const closeAlbum=document.getElementById("closeAlbum")
+const playAlbum=document.getElementById("playAlbum")
+const albumMusic=document.getElementById("albumMusic")
+
+window.onload=function(){
+
+setTimeout(()=>{
+
+albumModal.style.display="flex"
+
+},1200)
+
+}
+
+albumBtn.onclick=()=>{
+
+albumModal.style.display="flex"
+
+}
+
+closeAlbum.onclick=()=>{
+
+albumModal.style.display="none"
+
+}
+
+playAlbum.onclick=()=>{
+
+albumMusic.play()
+
+}
+
+</script>
+
 </body>
 </html>
